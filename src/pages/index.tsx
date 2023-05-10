@@ -8,6 +8,9 @@ const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
 const NewTweetForm = dynamic(() => import("@/components/tweets/NewTweetForm"), {
   loading: () => <p>Loading...</p>,
 });
+const RecentTweets = dynamic(() => import("@/components/tweets/RecentTweets"), {
+  loading: () => <p>Loading...</p>,
+});
 const Home: NextPage = () => {
   return (
     <section className="container mx-auto flex items-start sm:pr-4">
@@ -25,6 +28,7 @@ const Home: NextPage = () => {
           <h1 className="mb-2 px-4 text-lg font-bold">Home</h1>
         </header>
         <NewTweetForm />
+        <RecentTweets />
       </main>
     </section>
   );
