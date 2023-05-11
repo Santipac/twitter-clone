@@ -35,7 +35,7 @@ function Form() {
       setInputValue("");
 
       if (session.status !== "authenticated") return;
-
+      // This function add the new Tweet to the cache list.
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
         if (oldData == null || oldData.pages[0] == null) return;
 
@@ -52,6 +52,7 @@ function Form() {
 
         return {
           ...oldData,
+          // We modify the first page to load the new tweet on it, and use the slice to continue with the pagination from the second unmodified page.
           pages: [
             {
               ...oldData.pages[0],

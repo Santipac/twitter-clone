@@ -16,8 +16,10 @@ export function TweetCard({
   likedByMe,
 }: Tweet) {
   const trpcUtils = api.useContext();
+  // The function toggleLike modifies the number of likes the tweet has and changes its styles if we liked it or not. Instead of refetching every time tweets (likes) change, it only modifies the tweet in question and keeps the others in cache.
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
+      // Takes the typeof of data through the parameters of the function
       const updateData: Parameters<
         typeof trpcUtils.tweet.infiniteFeed.setInfiniteData
       >[1] = (oldData) => {

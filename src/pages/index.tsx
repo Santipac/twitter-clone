@@ -1,6 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
   loading: () => <p>Loading...</p>,
@@ -11,7 +13,17 @@ const NewTweetForm = dynamic(() => import("@/components/tweets/NewTweetForm"), {
 const RecentTweets = dynamic(() => import("@/components/tweets/RecentTweets"), {
   loading: () => <p>Loading...</p>,
 });
+const FollowingTweets = dynamic(
+  () => import("@/components/tweets/FollowingTweets"),
+  {
+    loading: () => <p>Loading...</p>,
+  }
+);
+const TABS = ["Recent", "Following"] as const;
 const Home: NextPage = () => {
+  const [selectedTab, setSelectedTab] =
+    useState<(typeof TABS)[number]>("Recent");
+  const session = useSession();
   return (
     <section className="container mx-auto flex items-start sm:pr-4">
       <Head>
@@ -26,9 +38,26 @@ const Home: NextPage = () => {
       <main className="min-h-screen flex-grow border-x">
         <header className="sticky top-0 z-10 border-b bg-white pt-2">
           <h1 className="mb-2 px-4 text-lg font-bold">Home</h1>
+          {session.status === "authenticated" && (
+            <div className="flex">
+              {TABS.map((tab) => (
+                <button
+                  key={tab}
+                  className={`hover:bg-gay-200 flex-grow p-2 focus-visible:bg-gray-200 ${
+                    tab === selectedTab
+                      ? "border-b-4 border-b-blue-500 font-bold"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedTab(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          )}
         </header>
         <NewTweetForm />
-        <RecentTweets />
+        {selectedTab === "Recent" ? <RecentTweets /> : <FollowingTweets />}
       </main>
     </section>
   );
