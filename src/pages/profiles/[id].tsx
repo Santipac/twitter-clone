@@ -38,7 +38,7 @@ const ProfileUserPage: NextPage<Props> = ({ id }) => {
   if (profile == null || profile.name == null)
     return <ErrorPage statusCode={404} />;
   return (
-    <section>
+    <section className="min-h-screen bg-white">
       <Head>
         <title>{`Twitter Clone Profile for ${profile.name}`}</title>
       </Head>
@@ -50,7 +50,7 @@ const ProfileUserPage: NextPage<Props> = ({ id }) => {
         </NextLink>
         <ProfileImage src={profile.image} className="flex-shrink-0" />
         <div className="ml-2 flex-grow">
-          <h1 className="text-lg font-bold">{profile.name}</h1>
+          <h1 className="text-lg font-bold text-gray-600">{profile.name}</h1>
           <div className="text-gray-500">
             {profile.tweetsCount}{" "}
             {getPlural(profile.tweetsCount, "Tweet", "Tweets")} -{" "}

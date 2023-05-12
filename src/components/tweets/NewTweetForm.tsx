@@ -74,7 +74,7 @@ function Form() {
 
   return (
     <form
-      className="flex flex-col gap-2 border-b px-4 py-2"
+      className="flex flex-col gap-2 border-b px-4 py-3"
       onSubmit={handleSubmit}
     >
       <div className="flex gap-4">
@@ -83,11 +83,11 @@ function Form() {
           ref={inputRef}
           value={inputValue}
           onChange={({ target }) => setInputValue(target.value)}
-          className="flex-grow resize-none overflow-hidden p-4 text-lg outline-none"
+          className="flex-grow resize-none overflow-hidden bg-white p-4 text-lg text-gray-600 outline-none"
           placeholder="What's happening?"
         />
       </div>
-      <Button className="self-end">Tweet</Button>
+      <Button className="self-end bg-blue-500 text-white">Tweet</Button>
     </form>
   );
 }

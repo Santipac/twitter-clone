@@ -3,6 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import MobileMenu from "@/components/ui/MobileMenu";
 
 const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
   loading: () => <p>Loading...</p>,
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
     useState<(typeof TABS)[number]>("Recent");
   const session = useSession();
   return (
-    <section className="container mx-auto flex items-start sm:pr-4">
+    <section className="flex justify-center bg-white">
       <Head>
         <title>Tweet Clone T3 APP</title>
         <meta
@@ -34,31 +35,38 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SideNav />
-      <main className="min-h-screen flex-grow border-x">
-        <header className="sticky top-0 z-10 border-b bg-white pt-2">
-          <h1 className="mb-2 px-4 text-lg font-bold">Home</h1>
-          {session.status === "authenticated" && (
-            <div className="flex">
-              {TABS.map((tab) => (
-                <button
-                  key={tab}
-                  className={`hover:bg-gay-200 flex-grow p-2 focus-visible:bg-gray-200 ${
-                    tab === selectedTab
-                      ? "border-b-4 border-b-blue-500 font-bold"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedTab(tab)}
-                >
-                  {tab}
-                </button>
-              ))}
+      <section className="grid w-full grid-cols-12 justify-center md:max-w-4xl">
+        <SideNav />
+        <main className="col-start-1 col-end-13 min-h-screen  border-x md:col-start-3  md:col-end-10">
+          <header className="sticky top-0 z-10 border-b bg-white pt-2">
+            <div className="flex w-full items-center px-4 md:py-2">
+              <h1 className="flex-1 text-lg font-bold text-gray-800 md:mb-1 ">
+                Home
+              </h1>
+              <MobileMenu />
             </div>
-          )}
-        </header>
-        <NewTweetForm />
-        {selectedTab === "Recent" ? <RecentTweets /> : <FollowingTweets />}
-      </main>
+            {session.status === "authenticated" && (
+              <div className="flex">
+                {TABS.map((tab) => (
+                  <button
+                    key={tab}
+                    className={` flex-grow p-2 text-gray-800 hover:bg-gray-200 focus-visible:bg-gray-200 ${
+                      tab === selectedTab
+                        ? "border-b-4 border-b-blue-500 font-bold"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedTab(tab)}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            )}
+          </header>
+          <NewTweetForm />
+          {selectedTab === "Recent" ? <RecentTweets /> : <FollowingTweets />}
+        </main>
+      </section>
     </section>
   );
 };

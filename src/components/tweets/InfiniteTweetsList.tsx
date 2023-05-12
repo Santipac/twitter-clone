@@ -3,6 +3,7 @@ import { LoadingSpinner } from "../ui/LoadingSpinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import type { Tweet } from "@/types/tweet";
 import { TweetCard } from "./TweetCard";
+import SkeletonTweet from "./SkeletonTweet";
 
 type Props = {
   isLoading: boolean;
@@ -19,7 +20,15 @@ function InfiniteTweetsList({
   fetchNewTweets,
   hasNextPage = false,
 }: Props) {
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading)
+    return (
+      <>
+        <SkeletonTweet />
+        <SkeletonTweet />
+        <SkeletonTweet />
+        <SkeletonTweet />
+      </>
+    );
   if (isError) return <h1>Error...</h1>;
 
   if (tweets == null || tweets.length == 0) {

@@ -18,6 +18,13 @@ export const tweetRouter = createTRPCRouter({
       void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`);
       return tweet;
     }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input: { id }, ctx }) => {
+      const tweet = await ctx.prisma.tweet.delete({where: {id}})
+      void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`);
+      return tweet;
+    }),
   infiniteFeed: publicProcedure
     .input(
       z.object({

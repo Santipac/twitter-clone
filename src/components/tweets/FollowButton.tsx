@@ -20,7 +20,12 @@ export default function FollowButton({
   }
 
   return (
-    <Button disabled={isLoading} onClick={onClick} small gray={isFollowing}>
+    <Button
+      className="bg-blue-500 text-white"
+      disabled={isLoading}
+      onClick={onClick}
+      gray={isFollowing}
+    >
       {isFollowing ? "Unfollow" : "Follow"}
     </Button>
   );

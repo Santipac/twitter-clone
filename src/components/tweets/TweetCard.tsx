@@ -66,7 +66,7 @@ export function TweetCard({
       <div className="flex flex-grow flex-col">
         <div className="flex gap-1">
           <NextLink
-            className="focus-visible: font-bold underline hover:underline"
+            className="focus-visible: font-bold text-gray-600 "
             href={`/profiles/${user.id}`}
           >
             {user.name}
@@ -76,7 +76,7 @@ export function TweetCard({
             {dateTimeFormatter.format(createdAt)}
           </span>
         </div>
-        <p className="whitespace-pre-wrap">{content}</p>
+        <p className="whitespace-pre-wrap text-gray-600">{content}</p>
         <HeartButton
           likedByMe={likedByMe}
           likeCount={likeCount}
