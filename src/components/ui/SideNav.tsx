@@ -1,7 +1,7 @@
 import React from "react";
 import NextLink from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { IconHoverEffect } from "../tweets/IconHoverEffect";
+import { IconHoverEffect } from "./IconHoverEffect";
 import { VscAccount, VscHome, VscSignIn, VscSignOut } from "react-icons/vsc";
 export default function SideNav() {
   const { data: session } = useSession();

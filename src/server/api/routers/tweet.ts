@@ -19,11 +19,17 @@ export const tweetRouter = createTRPCRouter({
       return tweet;
     }),
   delete: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input: { id }, ctx }) => {
-      const tweet = await ctx.prisma.tweet.delete({where: {id}})
+    .input(z.object({ tweetId: z.string() }))
+    .mutation(async ({ input: { tweetId }, ctx }) => {
+      const currentUserId = ctx.session.user.id;
+      const tweet = await ctx.prisma.tweet.findUnique({
+        where: { id: tweetId },
+      });
+      if (!tweet) return false;
+      if (tweet.userId !== currentUserId) return false;
+      await ctx.prisma.tweet.delete({ where: { id: tweetId } });
       void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`);
-      return tweet;
+      return true;
     }),
   infiniteFeed: publicProcedure
     .input(

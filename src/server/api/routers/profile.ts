@@ -2,6 +2,17 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const profileRouter = createTRPCRouter({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const profiles = await ctx.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        _count: { select: { followers: true, follows: true, tweets: true } },
+      },
+    });
+    return profiles;
+  }),
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input: { id }, ctx }) => {

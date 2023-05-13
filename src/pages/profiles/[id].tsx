@@ -5,7 +5,7 @@ import Head from "next/head";
 import NextLink from "next/link";
 import ErrorPage from "next/error";
 import type { GetStaticPaths, GetStaticPropsContext, NextPage } from "next";
-import { IconHoverEffect } from "@/components/tweets/IconHoverEffect";
+import { IconHoverEffect } from "@/components/ui/IconHoverEffect";
 import { VscArrowLeft } from "react-icons/vsc";
 import ProfileImage from "@/components/ui/ProfileImage";
 import { getPlural } from "@/helpers";

@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import MobileMenu from "@/components/ui/MobileMenu";
-
 const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
   loading: () => <p>Loading...</p>,
 });
@@ -20,6 +19,10 @@ const FollowingTweets = dynamic(
     loading: () => <p>Loading...</p>,
   }
 );
+const FollowList = dynamic(() => import("@/components/tweets/FollowList"), {
+  loading: () => <p>Loading...</p>,
+});
+
 const TABS = ["Recent", "Following"] as const;
 const Home: NextPage = () => {
   const [selectedTab, setSelectedTab] =
@@ -35,7 +38,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="grid w-full grid-cols-12 justify-center md:max-w-4xl">
+      <section className="grid w-full grid-cols-12 justify-center md:max-w-5xl">
         <SideNav />
         <main className="col-start-1 col-end-13 min-h-screen  border-x md:col-start-3  md:col-end-10">
           <header className="sticky top-0 z-10 border-b bg-white pt-2">
@@ -66,6 +69,7 @@ const Home: NextPage = () => {
           <NewTweetForm />
           {selectedTab === "Recent" ? <RecentTweets /> : <FollowingTweets />}
         </main>
+        <FollowList />
       </section>
     </section>
   );

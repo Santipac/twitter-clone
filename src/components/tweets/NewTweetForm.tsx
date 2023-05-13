@@ -68,6 +68,7 @@ function Form() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (inputValue === "") return;
     createTweet.mutate({ content: inputValue });
     setInputValue("");
   }
@@ -87,7 +88,12 @@ function Form() {
           placeholder="What's happening?"
         />
       </div>
-      <Button className="self-end bg-blue-500 text-white">Tweet</Button>
+      <Button
+        disabled={inputValue === ""}
+        className="self-end bg-blue-500 text-white"
+      >
+        Tweet
+      </Button>
     </form>
   );
 }
