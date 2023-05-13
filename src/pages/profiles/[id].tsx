@@ -11,6 +11,14 @@ import ProfileImage from "@/components/ui/ProfileImage";
 import { getPlural } from "@/helpers";
 import FollowButton from "@/components/tweets/FollowButton";
 import InfiniteTweetsList from "@/components/tweets/InfiniteTweetsList";
+import dynamic from "next/dynamic";
+
+const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
+  loading: () => <p>Loading...</p>,
+});
+const FollowList = dynamic(() => import("@/components/tweets/FollowList"), {
+  loading: () => <></>,
+});
 interface Props {
   id: string;
 }
@@ -38,43 +46,51 @@ const ProfileUserPage: NextPage<Props> = ({ id }) => {
   if (profile == null || profile.name == null)
     return <ErrorPage statusCode={404} />;
   return (
-    <section className="min-h-screen bg-white">
+    <section className="flex min-h-screen justify-center bg-white">
       <Head>
-        <title>{`Twitter Clone Profile for ${profile.name}`}</title>
+        <title>{`Socialize App Profile for ${profile.name}`}</title>
       </Head>
-      <header className="sticky top-0 z-10 flex items-center border-b bg-white px-4 py-2">
-        <NextLink href=".." className="mr-2">
-          <IconHoverEffect>
-            <VscArrowLeft className="h-6 w-6" />
-          </IconHoverEffect>
-        </NextLink>
-        <ProfileImage src={profile.image} className="flex-shrink-0" />
-        <div className="ml-2 flex-grow">
-          <h1 className="text-lg font-bold text-gray-600">{profile.name}</h1>
-          <div className="text-gray-500">
-            {profile.tweetsCount}{" "}
-            {getPlural(profile.tweetsCount, "Tweet", "Tweets")} -{" "}
-            {profile.followersCount}{" "}
-            {getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
-            {profile.followsCount} Following
-          </div>
-        </div>
-        <FollowButton
-          isFollowing={profile.isFollowing}
-          isLoading={toggleFollow.isLoading}
-          userId={id}
-          onClick={() => toggleFollow.mutate({ userId: id })}
-        />
-      </header>
-      <main>
-        <InfiniteTweetsList
-          tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
-          isError={tweets.isError}
-          isLoading={tweets.isLoading}
-          hasNextPage={tweets.hasNextPage}
-          fetchNewTweets={tweets.fetchNextPage}
-        />
-      </main>
+      <section className="grid w-full grid-cols-12 justify-center md:max-w-5xl">
+        <SideNav />
+        <section className="col-start-1 col-end-13 min-h-screen  border-x md:col-start-3  md:col-end-10">
+          <header className="sticky top-0 z-10 flex items-center border-b bg-white px-4 py-2 ">
+            <NextLink href=".." className="mr-2">
+              <IconHoverEffect>
+                <VscArrowLeft className="h-6 w-6" />
+              </IconHoverEffect>
+            </NextLink>
+            <ProfileImage src={profile.image} className="flex-shrink-0" />
+            <div className="ml-2 flex-grow">
+              <h1 className="text-lg font-bold text-gray-600">
+                {profile.name}
+              </h1>
+              <div className="text-gray-500">
+                {profile.tweetsCount}{" "}
+                {getPlural(profile.tweetsCount, "Tweet", "Tweets")} -{" "}
+                {profile.followersCount}{" "}
+                {getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
+                {profile.followsCount} Following
+              </div>
+            </div>
+            <FollowButton
+              isFollowing={profile.isFollowing}
+              isLoading={toggleFollow.isLoading}
+              userId={id}
+              onClick={() => toggleFollow.mutate({ userId: id })}
+            />
+          </header>
+          <main>
+            <InfiniteTweetsList
+              tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
+              isError={tweets.isError}
+              isLoading={tweets.isLoading}
+              hasNextPage={tweets.hasNextPage}
+              fetchNewTweets={tweets.fetchNextPage}
+            />
+          </main>
+        </section>
+        <FollowList />
+      </section>
     </section>
   );
 };
