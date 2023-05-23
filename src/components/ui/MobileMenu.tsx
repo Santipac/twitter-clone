@@ -1,54 +1,71 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from "react";
 import Image from "next/image";
-import NextLink from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { VscAccount } from "react-icons/vsc";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/primitives/dropdown-menu";
+import { Button } from "../primitives/button";
+import { useRouter } from "next/router";
+import { HiOutlineUser } from "react-icons/hi2";
 export default function MobileMenu() {
   const { data: session } = useSession();
-
+  const router = useRouter();
   return (
-    <div className="dropdown-end dropdown block md:hidden">
-      <label tabIndex={0} className="m-1">
-        {session?.user.image ? (
-          <Image
-            src={`${session.user.image}`}
-            width={35}
-            height={35}
-            alt="Profile avatar image"
-            className="rounded-full"
-          />
-        ) : (
-          <VscAccount size="35px" />
-        )}
-      </label>
-      <ul
-        tabIndex={0}
-        className="dropdown-content menu rounded-box w-52 bg-gray-100 p-2 text-gray-800 shadow"
-      >
-        {session ? (
-          <>
-            <li>
-              <NextLink href="/">Home</NextLink>
-            </li>
-            <li>
-              <NextLink href={`/profiles/${session.user.id}`}>Profile</NextLink>
-            </li>
-            <li>
-              <span onClick={() => signOut()}>Sign Out</span>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <NextLink href="/">Home</NextLink>
-            </li>
-            <li>
-              <NextLink href="/signin">Sign in</NextLink>
-            </li>
-          </>
-        )}
-      </ul>
+    <div className="block min-[425px]:hidden">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="outline-none ring-transparent">
+          <Button variant="ghost" className="h-12 w-12 p-0 md:h-8 md:w-8">
+            <span className="sr-only">Open menu</span>
+            {session ? (
+              <Image
+                src={session.user.image || ""}
+                alt="Profile Image"
+                quality={100}
+                width={35}
+                height={35}
+                className=" rounded-full md:hidden"
+              />
+            ) : (
+              <HiOutlineUser className="h-6 w-6 text-black" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="mx-4">
+          {session ? (
+            <>
+              <DropdownMenuItem
+                onClick={() => void router.push("/")}
+                className="cursor-pointer"
+              >
+                Home
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => void router.push(`/profiles/${session.user.id}`)}
+                className="cursor-pointer"
+              >
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => void signOut()}
+                className="cursor-pointer"
+              >
+                Sign out
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <DropdownMenuItem
+              onClick={() => void router.push("/signin")}
+              className="cursor-pointer"
+            >
+              Sign in
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

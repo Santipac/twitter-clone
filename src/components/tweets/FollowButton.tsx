@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import React from "react";
-import Button from "../ui/Button";
+import { Button } from "../primitives/button";
 
 export default function FollowButton({
   userId,
@@ -21,10 +21,9 @@ export default function FollowButton({
 
   return (
     <Button
-      className="bg-blue-500 text-white"
+      className={`rounded-full bg-blue-500 text-white hover:bg-sky-600`}
       disabled={isLoading}
       onClick={onClick}
-      gray={isFollowing}
     >
       {isFollowing ? "Unfollow" : "Follow"}
     </Button>

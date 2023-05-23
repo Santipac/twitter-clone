@@ -9,6 +9,14 @@ import { IconHoverEffect } from "../ui/IconHoverEffect";
 import { api } from "@/utils/api";
 import { HeartIcon as HeartOutlined } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartFilled } from "@heroicons/react/24/solid";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/primitives/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
+import { Button } from "../primitives/button";
 export function TweetCard({
   id,
   likeCount,
@@ -77,7 +85,7 @@ export function TweetCard({
           <div className="flex w-full items-center justify-between">
             <div>
               <NextLink
-                className="focus-visible: font-bold text-gray-600 "
+                className="font-bold text-gray-600 "
                 href={`/profiles/${user.id}`}
               >
                 {user.name}
@@ -88,13 +96,25 @@ export function TweetCard({
               </span>
             </div>
             {session?.user.id === user.id && (
-              <button
-                className="text-md mx-2 cursor-pointer text-red-500 disabled:cursor-not-allowed disabled:text-red-400"
-                onClick={() => deleteTweet({ tweetId: id })}
-                disabled={isLoading}
-              >
-                Delete
-              </button>
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none ring-transparent">
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                      <span className="sr-only">Open menu</span>
+                      <MoreHorizontal className="h-4 w-4 " />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="mr-4">
+                    <DropdownMenuItem
+                      onClick={() => void deleteTweet({ tweetId: id })}
+                      className="cursor-pointer text-red-500"
+                      disabled={isLoading}
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             )}
           </div>
         </div>

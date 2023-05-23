@@ -5,10 +5,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Button from "../ui/Button";
 import ProfileImage from "../ui/ProfileImage";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
+import { Button } from "../primitives/button";
 
 function updateTextAreaSize(textArea?: HTMLTextAreaElement) {
   if (textArea == null) return;
@@ -75,22 +75,22 @@ function Form() {
 
   return (
     <form
-      className="flex flex-col gap-2 border-b px-4 py-3"
+      className="flex flex-col gap-2 space-y-4 border-b px-2 py-3"
       onSubmit={handleSubmit}
     >
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <ProfileImage src={session.data.user.image} />
         <textarea
           ref={inputRef}
           value={inputValue}
           onChange={({ target }) => setInputValue(target.value)}
-          className="flex-grow resize-none overflow-hidden bg-white p-4 text-lg text-gray-600 outline-none"
+          className="flex-grow resize-none overflow-hidden bg-white p-2 text-lg text-gray-600 outline-none"
           placeholder="What's happening?"
         />
       </div>
       <Button
         disabled={inputValue === ""}
-        className="self-end bg-blue-500 text-white"
+        className="self-end rounded-full bg-blue-500 text-white"
       >
         Tweet
       </Button>

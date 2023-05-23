@@ -17,7 +17,13 @@ export default function ProfileImage({
       {src == null ? (
         <VscAccount className="h-full w-full" />
       ) : (
-        <Image src={src} alt="Profile Image" quality={100} fill />
+        <Image
+          src={src}
+          alt="Profile Image"
+          quality={100}
+          width={70}
+          height={70}
+        />
       )}
     </div>
   );

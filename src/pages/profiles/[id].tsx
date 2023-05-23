@@ -2,23 +2,14 @@ import React from "react";
 import { ssgHelper } from "@/server/api/ssgHelper";
 import { api } from "@/utils/api";
 import Head from "next/head";
-import NextLink from "next/link";
 import ErrorPage from "next/error";
 import type { GetStaticPaths, GetStaticPropsContext, NextPage } from "next";
-import { IconHoverEffect } from "@/components/ui/IconHoverEffect";
-import { VscArrowLeft } from "react-icons/vsc";
-import ProfileImage from "@/components/ui/ProfileImage";
 import { getPlural } from "@/helpers";
 import FollowButton from "@/components/tweets/FollowButton";
 import InfiniteTweetsList from "@/components/tweets/InfiniteTweetsList";
-import dynamic from "next/dynamic";
-
-const SideNav = dynamic(() => import("@/components/ui/SideNav"), {
-  loading: () => <p>Loading...</p>,
-});
-const FollowList = dynamic(() => import("@/components/tweets/FollowList"), {
-  loading: () => <></>,
-});
+import { PageLayout } from "@/components/layout/PageLayout";
+import Image from "next/image";
+import MobileMenu from "@/components/ui/MobileMenu";
 interface Props {
   id: string;
 }
@@ -50,34 +41,46 @@ const ProfileUserPage: NextPage<Props> = ({ id }) => {
       <Head>
         <title>{`Socialize App Profile for ${profile.name}`}</title>
       </Head>
-      <section className="grid w-full grid-cols-12 justify-center md:max-w-5xl">
-        <SideNav />
-        <section className="col-start-1 col-end-13 min-h-screen  border-x md:col-start-3  md:col-end-10">
-          <header className="sticky top-0 z-10 flex items-center border-b bg-white px-4 py-2 ">
-            <NextLink href=".." className="mr-2">
-              <IconHoverEffect>
-                <VscArrowLeft className="h-6 w-6" />
-              </IconHoverEffect>
-            </NextLink>
-            <ProfileImage src={profile.image} className="flex-shrink-0" />
-            <div className="ml-2 flex-grow">
-              <h1 className="text-lg font-bold text-gray-600">
-                {profile.name}
-              </h1>
-              <div className="text-gray-500">
-                {profile.tweetsCount}{" "}
-                {getPlural(profile.tweetsCount, "Tweet", "Tweets")} -{" "}
-                {profile.followersCount}{" "}
-                {getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
-                {profile.followsCount} Following
-              </div>
+      <PageLayout>
+        <section className="flex flex-1 flex-col border-x">
+          <header className="sticky top-0 z-10 flex flex-col space-y-2 border-b bg-white">
+            <div className="flex h-[6rem] w-full justify-end bg-slate-200">
+              <MobileMenu />
             </div>
-            <FollowButton
-              isFollowing={profile.isFollowing}
-              isLoading={toggleFollow.isLoading}
-              userId={id}
-              onClick={() => toggleFollow.mutate({ userId: id })}
-            />
+            <div className="flex flex-col items-center gap-2">
+              <Image
+                src={profile.image ?? ""}
+                alt={`Profile Avatar for ${profile.name}`}
+                width={80}
+                height={80}
+                className="-mt-12 rounded-full shadow-md"
+              />
+              <h2 className="text-lg font-bold">{profile.name}</h2>
+            </div>
+            <div className="flex justify-center gap-2">
+              <p className="font-regular text-sm text-gray-500">
+                {profile.followersCount}{" "}
+                {getPlural(profile.followersCount, "Follower", "Followers")}
+              </p>
+              ·
+              <p className="font-regular text-sm text-gray-500">
+                {profile.followsCount} Following
+              </p>
+              ·
+              <p className="font-regular text-sm text-gray-500">
+                {profile.tweetsCount}{" "}
+                {getPlural(profile.tweetsCount, "Tweet", "Tweets")}
+              </p>
+            </div>
+
+            <div className="flex justify-center pb-4">
+              <FollowButton
+                isFollowing={profile.isFollowing}
+                isLoading={toggleFollow.isLoading}
+                userId={id}
+                onClick={() => toggleFollow.mutate({ userId: id })}
+              />
+            </div>
           </header>
           <main>
             <InfiniteTweetsList
@@ -89,11 +92,15 @@ const ProfileUserPage: NextPage<Props> = ({ id }) => {
             />
           </main>
         </section>
-        <FollowList />
-      </section>
+      </PageLayout>
     </section>
   );
 };
+
+/*
+  
+
+*/
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
