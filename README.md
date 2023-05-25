@@ -25,3 +25,5 @@ Para esta aplicacion utilice las siguientes tecnologías
 - Next Auth
 - Prisma ORM
 - MySQL (PlanetScale)
+
+![Twitter UI Clone desktop](https://github.com/Santipac/twitter-clone/assets/92342946/d30e9787-6e3f-41c8-a553-8037a929ffb0)
