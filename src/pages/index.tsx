@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SkeletonTweet from "@/components/tweets/SkeletonTweet";
 import { PageLayout } from "@/components/layout/PageLayout";
-
+import favicon from "../../public/favicon.png";
 const MobileMenu = dynamic(() => import("@/components/ui/MobileMenu"), {
   loading: () => <></>,
   ssr: false,
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Twitter UI Clone</title>
         <meta name="description" content="Application created with T3 Stack" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={favicon.src} />
       </Head>
       <PageLayout>
         <main className=" min-h-screen flex-1 border-x">
